@@ -20,12 +20,27 @@ def get_all_users_route():
     return jsonify([
         {
             "id": user.id,
-            "name": user.name,
-            "age": user.age
+            "username": user.username,
+            "password_hash": user.password_hash,
+            "is_admin": user.is_admin,
+            "is_banned": user.is_banned
         }
         for user in users
     ])
 
+@get_bp.route('/get_all_recipes', methods=['GET'])
+def get_all_recipes_route():
+    recipes = sqlQuery.get_all_recipes()
+
+    return jsonify([
+        {
+            "id": recipe.id,
+            "author_id": recipe.author_id,
+            "title": recipe.title,
+            "description": recipe.description
+        }
+        for recipe in recipes
+    ])
 
 app.register_blueprint(get_bp)
 
