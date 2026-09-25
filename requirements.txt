@@ -8,3 +8,4 @@ gunicorn
 fastapi
 uvicorn
 python-dotenv
+flask_sqlalchemy
