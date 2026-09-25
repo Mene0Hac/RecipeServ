@@ -1,0 +1,10 @@
+flask
+sqlalchemy
+requests
+sqlQuery
+pymysql
+psycopg[binary]
+gunicorn
+fastapi
+uvicorn
+python-dotenv

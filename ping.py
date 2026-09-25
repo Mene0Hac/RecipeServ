@@ -6,7 +6,7 @@ try:
     response = requests.get(URL+"get_all_users")
     print("Статус:", response.status_code)
     for row in response.json():
-        print(f"ID: {row['id']}, Имя: {row['username']}, Хэш пароля: {row['password_hash']}, isAdmin: {row['is_admin']}, isBanned: {row['is_banned']}"+"\n")
+        print(f"ID: {row['id']}, Имя: {row['username']}, Хэш пароля: {row['password_hash']}, isAdmin: {row['is_admin']}, isBanned: {row['is_banned']}")
 
 except requests.exceptions.ConnectionError:
     print("Ошибка: сервер не запущен или недоступен")

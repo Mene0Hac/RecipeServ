@@ -1,8 +1,11 @@
 
 from sqlalchemy import create_engine, false, text
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-# Данные для подключения к MySQL
-DB_URL = "mysql+pymysql://root:2289@localhost:3456/recipe_app"
+
+DB_URL = os.getenv("DB_URL")
 
 engine = create_engine(DB_URL)
 
@@ -26,18 +29,21 @@ engine = create_engine(DB_URL)
 def get_all_users():
     with engine.connect() as connection:
         result = connection.execute(
-            text("SELECT id, username, password_hash, is_admin, is_banned FROM user")
+            text("""
+                SELECT id, username, password_hash, is_admin, is_banned
+                FROM "user"
+            """)
         )
 
         return result.fetchall()  # Возвращаем все строки результата
-        
-        for row in result:
-            print(f"ID: {row.id}, Имя: {row.name}, Возраст: {row.age}")
 
 def get_all_recipes():
     with engine.connect() as connection:
         result = connection.execute(
-            text("SELECT id,author_id, title, description FROM recipe")
+            text("""
+                SELECT id, author_id, title, description
+                FROM "recipe"
+            """)
         )
 
         return result.fetchall()  # Возвращаем все строки результата
