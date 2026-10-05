@@ -1,12 +1,21 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
-from dotenv import load_dotenv
 import os
+from contextlib import contextmanager
+
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase, sessionmaker, Session
+
 load_dotenv()
 
-
 DB_URL = os.getenv("DB_URL")
-engine = create_engine(DB_URL)
+
+if not DB_URL:
+    raise RuntimeError("Переменная окружения DB_URL не задана")
+
+engine = create_engine(
+    DB_URL,
+    pool_pre_ping=True
+)
 
 SessionLocal = sessionmaker(
     bind=engine,
@@ -14,13 +23,20 @@ SessionLocal = sessionmaker(
     expire_on_commit=False
 )
 
+
 class Base(DeclarativeBase):
     pass
 
-def get_db():
-    db = SessionLocal()
+
+@contextmanager
+def session_scope():
+    session: Session = SessionLocal()
 
     try:
-        yield db
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
     finally:
-        db.close()
+        session.close()

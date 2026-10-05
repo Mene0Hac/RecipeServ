@@ -2,6 +2,7 @@ from sqlalchemy import String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from resipedb.image import Base
 
+
 class User(Base):
     __tablename__ = "user"
 
@@ -18,3 +19,6 @@ class User(Base):
             "is_admin": self.is_admin,
             "is_banned": self.is_banned
         }
+        
+    def __repr__(self):
+        return super().__repr__()
